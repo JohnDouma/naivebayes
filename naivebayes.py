@@ -85,9 +85,9 @@ def learn_distributions(file_lists_by_category):
     log_spam_probs = get_log_probabilities(file_lists_by_category[0])
     log_ham_probs = get_log_probabilities(file_lists_by_category[1])
     
-    num_spams = len(file_lists_by_category[0])
-    num_hams = len(file_lists_by_category[1])
-    total_emails = num_spams + num_hams
+    num_spams = len(file_lists_by_category[0]) + 1
+    num_hams = len(file_lists_by_category[1]) + 1
+    total_emails = num_spams + num_hams + 2
     
     return ([log_spam_probs, log_ham_probs], [num_spams/total_emails, num_hams/total_emails])
 
