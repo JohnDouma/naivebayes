@@ -81,8 +81,15 @@ def learn_distributions(file_lists_by_category):
                             each class:
                             [est. for log P(c=spam), est. for log P(c=ham)]
     """
-    ### TODO: Comment out the following line and write your code here
-    raise NotImplementedError
+    
+    log_spam_probs = get_log_probabilities(file_lists_by_category[0])
+    log_ham_probs = get_log_probabilities(file_lists_by_category[1])
+    
+    num_spams = len(file_lists_by_category[0])
+    num_hams = len(file_lists_by_category[1])
+    total_emails = num_spams + num_hams
+    
+    return ([log_spam_probs, log_ham_probs], [num_spams/total_emails, num_hams/total_emails])
 
 def classify_email(email_filename,
                    log_probabilities_by_category,
