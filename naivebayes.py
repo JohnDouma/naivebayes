@@ -26,9 +26,8 @@ def get_counts(file_list):
     counts = Counter()   
     for filename in file_list:
         words = util.get_words_in_file(filename)
-        
-    for word in words:
-        counts[word] += 1
+        for word in words:
+            counts[word] += 1
         
     return counts
 
