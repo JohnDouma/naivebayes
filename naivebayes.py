@@ -51,9 +51,15 @@ def get_log_probabilities(file_list):
     The data structure util.DefaultDict will be useful to you here, as will the
     get_counts() helper above.
     """
-    ### TODO: Comment out the following line and write your code here
-    raise NotImplementedError
 
+    counts = get_counts(file_list)
+    num_words = sum(counts.values()) + 2
+    log_probs = {}
+    for word in counts:
+        log_probs[word] = np.log((counts[word]+1)/num_words)
+        
+    return log_probs
+        
 
 def learn_distributions(file_lists_by_category):
     """
