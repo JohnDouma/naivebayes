@@ -4,6 +4,8 @@ import numpy as np
 
 import util
 
+from collections import Counter
+
 USAGE = "%s <test data folder> <spam folder> <ham folder>"
 
 def get_counts(file_list):
@@ -20,8 +22,15 @@ def get_counts(file_list):
     A dict whose keys are words, and whose values are the number of files the
     key occurred in.
     """
-    ### TODO: Comment out the following line and write your code here
-    raise NotImplementedError
+
+    counts = Counter()   
+    for filename in file_list:
+        words = util.get_words_in_file(filename)
+        
+    for word in words:
+        counts[word] += 1
+        
+    return counts
 
 def get_log_probabilities(file_list):
     """
@@ -105,7 +114,7 @@ def classify_emails(spam_files, ham_files, test_files):
 def main():
     ### Read arguments
     if len(sys.argv) != 4:
-        print USAGE % sys.argv[0]
+        print(USAGE % sys.argv[0])
     testing_folder = sys.argv[1]
     (spam_folder, ham_folder) = sys.argv[2:4]
 
