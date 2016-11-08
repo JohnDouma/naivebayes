@@ -5,6 +5,7 @@ import numpy as np
 import util
 
 from collections import Counter
+from collections import defaultdict
 
 USAGE = "%s <test data folder> <spam folder> <ham folder>"
 
@@ -54,7 +55,7 @@ def get_log_probabilities(file_list):
 
     counts = get_counts(file_list)
     num_words = sum(counts.values()) + 2
-    log_probs = {}
+    log_probs = defaultdict(lambda: -np.log(num_words))
     for word in counts:
         log_probs[word] = np.log((counts[word]+1)/num_words)
         
@@ -89,7 +90,7 @@ def learn_distributions(file_lists_by_category):
     num_hams = len(file_lists_by_category[1])
     total_emails = num_spams + num_hams
     
-    return ([log_spam_probs, log_ham_probs], [num_spams/total_emails, num_hams/total_emails])
+    return ([log_spam_probs, log_ham_probs], [np.log(num_spams/total_emails), np.log(num_hams/total_emails)])
 
 def classify_email(email_filename,
                    log_probabilities_by_category,
@@ -109,8 +110,20 @@ def classify_email(email_filename,
     ------
     One of the labels in names.
     """
-    ### TODO: Comment out the following line and write your code here
-    return 'spam'
+    
+    pspam = log_prior_by_category[0]
+    pYgivenSpam = log_probabilities_by_category[0]
+    pham = log_prior_by_category[1]
+    pYgivenHam = log_probabilities_by_category[1]
+    words = util.get_words_in_file(email_filename)
+    for word in words:
+        pspam += pYgivenSpam[word]
+        pham += pYgivenHam[word]
+        
+    if pspam >= pham:
+        return 'spam'
+        
+    return 'ham'
 
 def classify_emails(spam_files, ham_files, test_files):
     # DO NOT MODIFY -- used by the autograder
